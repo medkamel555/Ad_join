@@ -1,0 +1,9 @@
+---
+# defaults file for ad_join
+
+ad_server:
+    ip: 172.31.37.35
+    fqdn: corp.chhayder.com
+    user: admin
+    pass: '1Ver2Sky'
+    domain: corp.chhayder.com

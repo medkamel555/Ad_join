@@ -1,0 +1,11 @@
+# Keep entries ordered in an alphabetical order
+
+#------------------------------------------------
+#             LAB group definition
+#------------------------------------------------
+[IT_department]
+[IT_department:children]
+dataseserver
+webservers
+[dataseserver]
+[webservers]    

@@ -1,0 +1,12 @@
+---
+# vars file for ad_join
+java_8_jce_url: "http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip"
+pkgs: 
+  - realmd
+  - sssd
+  - samba-common-tools
+  - krb5-workstation
+  - oddjob-mkhomedir
+  - adcli
+
+ou_membership: OU=corp,DC=chhayder,DC=com

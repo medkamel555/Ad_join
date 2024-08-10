@@ -1,0 +1,3 @@
+- src: https://github.com/riponbanik/ansible-role-domain-join.git
+  scm: git
+  version: master

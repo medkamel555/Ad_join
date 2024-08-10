@@ -1,0 +1,126 @@
+---
+# tasks file for ad_join
+# TODO: Add check.yml included in the main in order to check the AD before trying the join domain
+# Code refactoring :  install.yml, check.yml, join.yml, update.yml
+
+
+- name: Installing Required packages
+  ansible.builtin.yum: 
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ pkgs }}"
+
+
+- name: Checking Domain Join status
+  ansible.builtin.shell: /bin/bash -c "/usr/sbin/realm discover {{ ad_server.domain }}"
+  register: ad_status
+  changed_when: false
+  ignore_errors: true
+  no_log: True
+
+- name: Debug the AD status
+  debug:
+   msg: "{{ ad_status }}"
+
+
+- name: Join system
+  command: /bin/bash -c "echo {{ ad_server.pass }} | realm join {{ ad_server.domain }} --user={{ ad_server.user }} "
+  register: join_output
+  ignore_errors: yes
+  no_log: True
+  
+
+- name: Display success message
+  debug:
+    msg: "Join successful!"
+  when: join_output.rc == 0
+
+- name: Display error message
+  debug:
+      msg: "Join failed or already joined"
+  when: join_output.rc != 0
+
+
+- name: Edit SSSD configuration file
+  block:
+        - name: Modify access_provider line
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^access_provider'
+            line: 'access_provider = simple'
+            state: present
+
+        - name: Add simple_allow_groups line
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^simple_allow_groups'
+            line: 'simple_allow_groups = Domain Admins, Linux'
+            state: present
+
+        - name: Add use_fully_qualified_names line
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^use_fully_qualified_names'
+            line: 'use_fully_qualified_names = False'
+            state: present
+        - name: Add fallback_homedir
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^fallback_homedir'
+            line: 'fallback_homedir = /home/%u'
+            state: present
+        - name: Add ad_gpo_access_control line to SSSD config
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^ad_gpo_access_control'
+            line: 'ad_gpo_access_control = permissive'
+            state: present
+  notify:
+  - restart sssd
+
+- name: To permit a user access via SSH and console
+  shell: /bin/bash -c "/usr/sbin/realm  permit {{ ad_server.user }} "
+  register: ad_status
+  no_log: True
+  ignore_errors: yes
+
+- name: Allow Password Auth for all users except root
+  block:
+    - name: Update the default config
+      lineinfile: 
+          backup: yes
+          state: present
+          dest: "/etc/ssh/sshd_config"
+          regexp: '^PasswordAuthentication'
+          line: 'PasswordAuthentication yes'
+    - name: Check if sshd_config.d exist
+      stat:
+        path: /etc/ssh/sshd_config.d
+      register: sshd_config_dir
+    - name: Get list of config file
+      find:
+        paths: "/etc/ssh/sshd_config.d/"
+        patterns: "*.conf"
+      register: sshd_config
+      when: sshd_config_dir.stat.exists
+    - name: Override the default sshd config
+      lineinfile: 
+        backup: yes
+        state: present
+        dest: "{{ item }}"
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication yes'
+      with_items: sshd_config
+      when: sshd_config_dir.stat.exists
+  notify:
+      - restart sshd
+
+
+
+- name: Updating sudors for Domain Admins users
+  lineinfile: 
+     path: /etc/sudoers
+     state: present
+     regexp: '^%domain\\ admins'
+     line: '%domain\ admins ALL=(ALL:ALL) ALL'
+     validate: 'visudo -cf %s'

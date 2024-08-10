@@ -1,0 +1,8 @@
+---
+# handlers file for ad_join
+
+- name: restart sssd
+  ansible.builtin.systemd: 
+    name: sssd 
+    state: restarted
+
