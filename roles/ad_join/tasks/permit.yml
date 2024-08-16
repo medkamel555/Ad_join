@@ -4,13 +4,17 @@
 - name: To permit a user access via SSH and console
   shell: /bin/bash -c "/usr/sbin/realm  permit --all"
   register: ad_status
-  no_log: True
-  ignore_errors: yes
+
 
 - name: To permit a Amdin group  suderos access
   shell: /bin/bash -c "realm permit -g 'AWS Delegated Administrators'"
   register: ad_status
-  no_log: True
-  ignore_errors: yes
 
 
+- name: Updating sudors for Domain Admins users
+  lineinfile: 
+     path: /etc/sudoers
+     state: present
+     regexp: '^AWS'
+     line: '%AWS\ Delegated\ Administrators@{{ ad_server.domain }} ALL=(ALL) NOPASSWD:ALL'
+     validate: 'visudo -cf %s'

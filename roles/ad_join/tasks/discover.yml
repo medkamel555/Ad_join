@@ -1,12 +1,8 @@
-
 ---
 
-- name: Checking Domain Join status
+- name: Checking Domain Join status if it's existe
   ansible.builtin.shell: /bin/bash -c "/usr/sbin/realm discover {{ ad_server.domain }}"
   register: ad_status
-  changed_when: false
-  ignore_errors: true
-  no_log: True
 
 - name: Debug the AD status
   debug:

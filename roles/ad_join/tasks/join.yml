@@ -1,19 +1,19 @@
 ---
 
-
 - name: Join system
   command: /bin/bash -c "echo {{ ad_server.pass }} | realm join {{ ad_server.domain }} --user={{ ad_server.user }} "
   register: join_output
   ignore_errors: yes
+  failed_when: false
   no_log: True
   
+- name: Display error message
+  debug:
+    msg: "{{ join_output.stderr_lines }}"
+  failed_when: true
+  when: join_output.rc != 0
 
 - name: Display success message
   debug:
     msg: "Join successful!"
   when: join_output.rc == 0
-
-- name: Display error message
-  debug:
-      msg: "Join failed or already joined"
-  when: join_output.rc != 0

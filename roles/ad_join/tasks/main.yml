@@ -4,55 +4,20 @@
 - name: "Installing Required packages"
   include_tasks: install.yml
 
-
-- name: Checking Domain Join status if it's existe
-  ansible.builtin.shell: /bin/bash -c "/usr/sbin/realm discover {{ ad_server.domain }}"
-  register: ad_status
-  changed_when: false
-  no_log: True
-
-- name: Debug the AD status
-  debug:
-   msg: "{{ ad_status }}"
-
-- name: Join system
-  command: /bin/bash -c "echo {{ ad_server.pass }} | realm join {{ ad_server.domain }} --user={{ ad_server.user }} "
-  register: join_output
-  ignore_errors: yes
-  failed_when: false
-  no_log: True
-  
-- name: Display error message
-  debug:
-    msg: "{{ join_output.stderr_lines }}"
-  failed_when: true
-  when: join_output.rc != 0
-
-- name: Display success message
-  debug:
-    msg: "Join successful!"
-  when: join_output.rc == 0
+- name: "Discover the domain name"
+  include_tasks: discover.yml
 
 - name: Edit SSSD configuration file
   import_tasks: sssd_config.yml
   notify:
   - restart sssd
 
-- name: To permit a user access via SSH and console
+- name: To permit a user access via SSH and console and Admin to sudoers
   import_tasks: permit.yml
-  notify:
-      - restart sshd
 
 - name: Edit SSH configuration file
   import_tasks: sshd_config.yml
   notify:
   - restart sshd
 
-- name: Updating sudors for Domain Admins users
-  lineinfile: 
-     path: /etc/sudoers
-     state: present
-     regexp: '^AWS'
-     line: '%AWS\ Delegated\ Administrators@{{ ad_server.domain }} ALL=(ALL) NOPASSWD:ALL'
-     validate: 'visudo -cf %s'
 
