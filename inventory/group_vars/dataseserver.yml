@@ -1,7 +1,3 @@
 
-
-ip: "172.31.37.35"
-fqdn: "corp.chhayder.com"
-user: "admin"
-pass: '1Ver2Sky'
-domain: "corp.chhayder.com"
+ad_server:
+  fqdn: "corp.chhayder.com"

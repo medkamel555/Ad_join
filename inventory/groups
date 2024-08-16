@@ -3,8 +3,8 @@
 #------------------------------------------------
 #             LAB group definition
 #------------------------------------------------
-[IT_department]
-[IT_department:children]
+[department]
+[department:children]
 dataseserver
 webservers
 [dataseserver]

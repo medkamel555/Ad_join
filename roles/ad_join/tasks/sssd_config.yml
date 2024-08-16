@@ -1,0 +1,32 @@
+        - name: Modify access_provider line
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^access_provider'
+            line: 'access_provider = simple'
+            state: present
+
+        - name: Add simple_allow_groups line
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^simple_allow_groups'
+            line: 'simple_allow_groups = Domain Admins, Linux'
+            state: present
+
+        - name: Add use_fully_qualified_names line
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^use_fully_qualified_names'
+            line: 'use_fully_qualified_names = False'
+            state: present
+        - name: Add fallback_homedir
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^fallback_homedir'
+            line: 'fallback_homedir = /home/%u'
+            state: present
+        - name: Add ad_gpo_access_control line to SSSD config
+          lineinfile:
+            path: /etc/sssd/sssd.conf
+            regexp: '^ad_gpo_access_control'
+            line: 'ad_gpo_access_control = permissive'
+            state: present

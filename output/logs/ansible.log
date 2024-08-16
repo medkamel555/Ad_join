@@ -1219,3 +1219,129 @@ setting deprecation_warnings=False in ansible.cfg.
 2024-08-10 12:12:00,930 p=21 u=root n=ansible | ad_join : Override the default sshd config ------------------------------ 0.03s
 2024-08-10 12:12:00,931 p=21 u=root n=ansible | ad_join : Display success message --------------------------------------- 0.02s
 2024-08-10 12:12:00,931 p=21 u=root n=ansible | ad_join : Get list of config file --------------------------------------- 0.02s
+2024-08-12 16:33:57,180 p=16 u=root n=ansible | [DEPRECATION WARNING]: [defaults]callback_whitelist option, normalizing names 
+to new standard, use callbacks_enabled instead. This feature will be removed 
+from ansible-core in version 2.15. Deprecation warnings can be disabled by 
+setting deprecation_warnings=False in ansible.cfg.
+2024-08-12 16:33:57,184 p=16 u=root n=ansible | {"/usr/share/ansible/collections/ansible_collections": {"amazon.aws": {"version": "3.2.0"}, "ansible.controller": {"version": "4.2.2"}, "ansible.netcommon": {"version": "3.1.1"}, "ansible.network": {"version": "1.2.0"}, "ansible.posix": {"version": "1.3.0"}, "ansible.security": {"version": "1.0.0"}, "ansible.utils": {"version": "2.6.1"}, "ansible.windows": {"version": "1.9.0"}, "ansible.yang": {"version": "1.0.0"}, "arista.eos": {"version": "5.0.0"}, "cisco.asa": {"version": "3.0.0"}, "cisco.ios": {"version": "3.0.0"}, "cisco.iosxr": {"version": "3.0.0"}, "cisco.nxos": {"version": "3.0.0"}, "cloud.common": {"version": "2.1.1"}, "frr.frr": {"version": "2.0.0"}, "ibm.qradar": {"version": "2.0.0"}, "junipernetworks.junos": {"version": "3.0.0"}, "kubernetes.core": {"version": "2.2.3"}, "openvswitch.openvswitch": {"version": "2.1.0"}, "redhat.insights": {"version": "1.0.7"}, "redhat.openshift": {"version": "2.1.0"}, "redhat.rhv": {"version": "1.6.5"}, "redhat.satellite": {"version": "3.3.0"}, "servicenow.itsm": {"version": "1.3.3"}, "splunk.es": {"version": "2.0.0"}, "trendmicro.deepsec": {"version": "2.0.0"}, "vmware.vmware_rest": {"version": "2.1.5"}, "vyos.vyos": {"version": "3.0.0"}}}
+2024-08-12 16:33:58,044 p=21 u=root n=ansible | [DEPRECATION WARNING]: [defaults]callback_whitelist option, normalizing names 
+to new standard, use callbacks_enabled instead. This feature will be removed 
+from ansible-core in version 2.15. Deprecation warnings can be disabled by 
+setting deprecation_warnings=False in ansible.cfg.
+2024-08-12 16:33:58,259 p=21 u=root n=ansible | PLAY [Ad join] *****************************************************************
+2024-08-12 16:33:58,271 p=21 u=root n=ansible | TASK [Gathering Facts] *********************************************************
+2024-08-12 16:33:58,272 p=21 u=root n=ansible | Monday 12 August 2024  16:33:58 +0000 (0:00:00.014)       0:00:00.014 ********* 
+2024-08-12 16:33:59,537 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:33:59,550 p=21 u=root n=ansible | TASK [ad_join : Installing Required packages] **********************************
+2024-08-12 16:33:59,551 p=21 u=root n=ansible | Monday 12 August 2024  16:33:59 +0000 (0:00:01.279)       0:00:01.294 ********* 
+2024-08-12 16:34:04,719 p=21 u=root n=ansible | ok: [databaserver-01] => (item=realmd)
+2024-08-12 16:34:09,576 p=21 u=root n=ansible | ok: [databaserver-01] => (item=sssd)
+2024-08-12 16:34:14,301 p=21 u=root n=ansible | ok: [databaserver-01] => (item=samba-common-tools)
+2024-08-12 16:34:18,968 p=21 u=root n=ansible | ok: [databaserver-01] => (item=krb5-workstation)
+2024-08-12 16:34:23,719 p=21 u=root n=ansible | ok: [databaserver-01] => (item=oddjob-mkhomedir)
+2024-08-12 16:34:28,363 p=21 u=root n=ansible | ok: [databaserver-01] => (item=adcli)
+2024-08-12 16:34:28,374 p=21 u=root n=ansible | TASK [ad_join : Checking Domain Join status] ***********************************
+2024-08-12 16:34:28,375 p=21 u=root n=ansible | Monday 12 August 2024  16:34:28 +0000 (0:00:28.823)       0:00:30.117 ********* 
+2024-08-12 16:34:28,788 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:28,796 p=21 u=root n=ansible | TASK [ad_join : Debug the AD status] *******************************************
+2024-08-12 16:34:28,796 p=21 u=root n=ansible | Monday 12 August 2024  16:34:28 +0000 (0:00:00.421)       0:00:30.539 ********* 
+2024-08-12 16:34:28,815 p=21 u=root n=ansible | ok: [databaserver-01] => {
+    "msg": {
+        "changed": false,
+        "cmd": "/bin/bash -c \"/usr/sbin/realm discover corp.chhayder.com\"",
+        "delta": "0:00:00.051641",
+        "end": "2024-08-12 16:34:28.766083",
+        "failed": false,
+        "msg": "",
+        "rc": 0,
+        "start": "2024-08-12 16:34:28.714442",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "corp.chhayder.com\n  type: kerberos\n  realm-name: CORP.CHHAYDER.COM\n  domain-name: corp.chhayder.com\n  configured: kerberos-member\n  server-software: active-directory\n  client-software: sssd\n  required-package: oddjob\n  required-package: oddjob-mkhomedir\n  required-package: sssd\n  required-package: adcli\n  required-package: samba-common-tools\n  login-formats: %U\n  login-policy: allow-permitted-logins\n  permitted-logins: admin\n  permitted-groups: Domain Admins, Linux",
+        "stdout_lines": [
+            "corp.chhayder.com",
+            "  type: kerberos",
+            "  realm-name: CORP.CHHAYDER.COM",
+            "  domain-name: corp.chhayder.com",
+            "  configured: kerberos-member",
+            "  server-software: active-directory",
+            "  client-software: sssd",
+            "  required-package: oddjob",
+            "  required-package: oddjob-mkhomedir",
+            "  required-package: sssd",
+            "  required-package: adcli",
+            "  required-package: samba-common-tools",
+            "  login-formats: %U",
+            "  login-policy: allow-permitted-logins",
+            "  permitted-logins: admin",
+            "  permitted-groups: Domain Admins, Linux"
+        ]
+    }
+}
+2024-08-12 16:34:28,824 p=21 u=root n=ansible | TASK [ad_join : Join system] ***************************************************
+2024-08-12 16:34:28,825 p=21 u=root n=ansible | Monday 12 August 2024  16:34:28 +0000 (0:00:00.028)       0:00:30.567 ********* 
+2024-08-12 16:34:29,099 p=21 u=root n=ansible | fatal: [databaserver-01]: FAILED! => {"censored": "the output has been hidden due to the fact that 'no_log: true' was specified for this result", "changed": true}
+2024-08-12 16:34:29,100 p=21 u=root n=ansible | ...ignoring
+2024-08-12 16:34:29,108 p=21 u=root n=ansible | TASK [ad_join : Display success message] ***************************************
+2024-08-12 16:34:29,108 p=21 u=root n=ansible | Monday 12 August 2024  16:34:29 +0000 (0:00:00.283)       0:00:30.851 ********* 
+2024-08-12 16:34:29,126 p=21 u=root n=ansible | skipping: [databaserver-01]
+2024-08-12 16:34:29,136 p=21 u=root n=ansible | TASK [ad_join : Display error message] *****************************************
+2024-08-12 16:34:29,137 p=21 u=root n=ansible | Monday 12 August 2024  16:34:29 +0000 (0:00:00.028)       0:00:30.879 ********* 
+2024-08-12 16:34:29,155 p=21 u=root n=ansible | ok: [databaserver-01] => {
+    "msg": "Join failed or already joined"
+}
+2024-08-12 16:34:29,162 p=21 u=root n=ansible | TASK [ad_join : Modify access_provider line] ***********************************
+2024-08-12 16:34:29,163 p=21 u=root n=ansible | Monday 12 August 2024  16:34:29 +0000 (0:00:00.025)       0:00:30.905 ********* 
+2024-08-12 16:34:29,545 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:29,552 p=21 u=root n=ansible | TASK [ad_join : Add simple_allow_groups line] **********************************
+2024-08-12 16:34:29,553 p=21 u=root n=ansible | Monday 12 August 2024  16:34:29 +0000 (0:00:00.390)       0:00:31.296 ********* 
+2024-08-12 16:34:29,799 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:29,806 p=21 u=root n=ansible | TASK [ad_join : Add use_fully_qualified_names line] ****************************
+2024-08-12 16:34:29,806 p=21 u=root n=ansible | Monday 12 August 2024  16:34:29 +0000 (0:00:00.253)       0:00:31.549 ********* 
+2024-08-12 16:34:30,052 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:30,059 p=21 u=root n=ansible | TASK [ad_join : Add fallback_homedir] ******************************************
+2024-08-12 16:34:30,059 p=21 u=root n=ansible | Monday 12 August 2024  16:34:30 +0000 (0:00:00.252)       0:00:31.802 ********* 
+2024-08-12 16:34:30,307 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:30,315 p=21 u=root n=ansible | TASK [ad_join : Add ad_gpo_access_control line to SSSD config] *****************
+2024-08-12 16:34:30,315 p=21 u=root n=ansible | Monday 12 August 2024  16:34:30 +0000 (0:00:00.256)       0:00:32.058 ********* 
+2024-08-12 16:34:30,562 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:30,569 p=21 u=root n=ansible | TASK [ad_join : To permit a user access via SSH and console] *******************
+2024-08-12 16:34:30,569 p=21 u=root n=ansible | Monday 12 August 2024  16:34:30 +0000 (0:00:00.253)       0:00:32.312 ********* 
+2024-08-12 16:34:31,010 p=21 u=root n=ansible | changed: [databaserver-01]
+2024-08-12 16:34:31,017 p=21 u=root n=ansible | TASK [ad_join : Update the default config] *************************************
+2024-08-12 16:34:31,017 p=21 u=root n=ansible | Monday 12 August 2024  16:34:31 +0000 (0:00:00.448)       0:00:32.760 ********* 
+2024-08-12 16:34:31,267 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:31,275 p=21 u=root n=ansible | TASK [ad_join : Check if sshd_config.d exist] **********************************
+2024-08-12 16:34:31,276 p=21 u=root n=ansible | Monday 12 August 2024  16:34:31 +0000 (0:00:00.258)       0:00:33.018 ********* 
+2024-08-12 16:34:31,643 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:31,651 p=21 u=root n=ansible | TASK [ad_join : Get list of config file] ***************************************
+2024-08-12 16:34:31,652 p=21 u=root n=ansible | Monday 12 August 2024  16:34:31 +0000 (0:00:00.376)       0:00:33.395 ********* 
+2024-08-12 16:34:31,667 p=21 u=root n=ansible | skipping: [databaserver-01]
+2024-08-12 16:34:31,674 p=21 u=root n=ansible | TASK [ad_join : Override the default sshd config] ******************************
+2024-08-12 16:34:31,674 p=21 u=root n=ansible | Monday 12 August 2024  16:34:31 +0000 (0:00:00.022)       0:00:33.417 ********* 
+2024-08-12 16:34:31,693 p=21 u=root n=ansible | skipping: [databaserver-01] => (item=sshd_config) 
+2024-08-12 16:34:31,705 p=21 u=root n=ansible | TASK [ad_join : Updating sudors for Domain Admins users] ***********************
+2024-08-12 16:34:31,706 p=21 u=root n=ansible | Monday 12 August 2024  16:34:31 +0000 (0:00:00.031)       0:00:33.448 ********* 
+2024-08-12 16:34:31,953 p=21 u=root n=ansible | ok: [databaserver-01]
+2024-08-12 16:34:31,969 p=21 u=root n=ansible | PLAY RECAP *********************************************************************
+2024-08-12 16:34:31,969 p=21 u=root n=ansible | databaserver-01            : ok=15   changed=2    unreachable=0    failed=0    skipped=3    rescued=0    ignored=1   
+2024-08-12 16:34:31,970 p=21 u=root n=ansible | Monday 12 August 2024  16:34:31 +0000 (0:00:00.264)       0:00:33.713 ********* 
+2024-08-12 16:34:31,970 p=21 u=root n=ansible | =============================================================================== 
+2024-08-12 16:34:31,971 p=21 u=root n=ansible | ad_join : Installing Required packages --------------------------------- 28.82s
+2024-08-12 16:34:31,972 p=21 u=root n=ansible | Gathering Facts --------------------------------------------------------- 1.28s
+2024-08-12 16:34:31,972 p=21 u=root n=ansible | ad_join : To permit a user access via SSH and console ------------------- 0.45s
+2024-08-12 16:34:31,973 p=21 u=root n=ansible | ad_join : Checking Domain Join status ----------------------------------- 0.42s
+2024-08-12 16:34:31,973 p=21 u=root n=ansible | ad_join : Modify access_provider line ----------------------------------- 0.39s
+2024-08-12 16:34:31,974 p=21 u=root n=ansible | ad_join : Check if sshd_config.d exist ---------------------------------- 0.38s
+2024-08-12 16:34:31,974 p=21 u=root n=ansible | ad_join : Join system --------------------------------------------------- 0.28s
+2024-08-12 16:34:31,975 p=21 u=root n=ansible | ad_join : Updating sudors for Domain Admins users ----------------------- 0.26s
+2024-08-12 16:34:31,976 p=21 u=root n=ansible | ad_join : Update the default config ------------------------------------- 0.26s
+2024-08-12 16:34:31,976 p=21 u=root n=ansible | ad_join : Add fallback_homedir ------------------------------------------ 0.26s
+2024-08-12 16:34:31,977 p=21 u=root n=ansible | ad_join : Add ad_gpo_access_control line to SSSD config ----------------- 0.25s
+2024-08-12 16:34:31,977 p=21 u=root n=ansible | ad_join : Add simple_allow_groups line ---------------------------------- 0.25s
+2024-08-12 16:34:31,978 p=21 u=root n=ansible | ad_join : Add use_fully_qualified_names line ---------------------------- 0.25s
+2024-08-12 16:34:31,978 p=21 u=root n=ansible | ad_join : Override the default sshd config ------------------------------ 0.03s
+2024-08-12 16:34:31,979 p=21 u=root n=ansible | ad_join : Debug the AD status ------------------------------------------- 0.03s
+2024-08-12 16:34:31,979 p=21 u=root n=ansible | ad_join : Display success message --------------------------------------- 0.03s
+2024-08-12 16:34:31,980 p=21 u=root n=ansible | ad_join : Display error message ----------------------------------------- 0.03s
+2024-08-12 16:34:31,981 p=21 u=root n=ansible | ad_join : Get list of config file --------------------------------------- 0.02s
