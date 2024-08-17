@@ -19,5 +19,3 @@
   import_tasks: sshd_config.yml
   notify:
   - restart sshd
-
-

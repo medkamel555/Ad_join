@@ -29,6 +29,4 @@
             path: /etc/sssd/sssd.conf
             regexp: '^ad_gpo_access_control'
             line: 'ad_gpo_access_control = permissive'
-            state: present
-
-        
+            state: present      

@@ -1,15 +1,12 @@
 ---
 
-
 - name: To permit a user access via SSH and console
   shell: /bin/bash -c "/usr/sbin/realm  permit --all"
   register: ad_status
 
-
 - name: To permit a Amdin group  suderos access
   shell: /bin/bash -c "realm permit -g 'AWS Delegated Administrators'"
   register: ad_status
-
 
 - name: Updating sudors for Domain Admins users
   lineinfile: 
