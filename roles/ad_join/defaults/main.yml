@@ -2,7 +2,6 @@
 # defaults file for ad_join
 
 ad_server:
-    fqdn: xx.xx.com
     user: admin
     pass: 'test'
     domain: corp.exmple.com

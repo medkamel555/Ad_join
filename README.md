@@ -1,4 +1,9 @@
-domain_join
+
+=========
+Automating the Process of Joining Linux Systems to an AD Domain using Ansible and SSSD
+
+
+
 Automate Linux Machine join AD using Ansible. 
 
 
@@ -7,6 +12,8 @@ To automate the process of joining Linux systems to an AD domain using SSSD, fol
 
 
 Install Ansible: Set up Ansible on a control node that will manage the configuration of your Linux systems.
+
+
 Define the Inventory: Create an inventory file that lists the Linux systems you want to join to the AD domain.
 2.4
 Operating systems

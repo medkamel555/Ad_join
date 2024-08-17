@@ -1,6 +1,9 @@
 galaxy_info:
   author: Mohamed kamel CHHAYDER
   description: Automate Linux Machine join AD using Ansible.  
+  title: System Devops engineer  
+  email: medkamel555@gmail.com
+  linkedin: linkedin.com/in/chhayder
   # If the issue tracker for your role is not on github, uncomment the
   # next line and provide a value
   # issue_tracker_url: http://example.com/issue/tracker
