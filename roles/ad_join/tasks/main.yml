@@ -7,6 +7,9 @@
 - name: "Discover the domain name"
   include_tasks: discover.yml
 
+- name: "Join the domain name"
+  include_tasks: join.yml
+
 - name: Edit SSSD configuration file
   import_tasks: sssd_config.yml
   notify:

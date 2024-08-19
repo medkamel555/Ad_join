@@ -7,17 +7,11 @@ Requirements
 
 Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here.
 
-To automate the process of joining Linux systems to an AD domain using SSSD, follow these steps:
-
-- Install Ansible: Set up Ansible on a control node that will manage the configuration of your Linux systems.
-
-[+] https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
-
 - Setup an Active Directory: You can as exemple AWS Directory service. You can refer to artical below or offical AWS doc.
 
-[+] https://medium.com/@medkamel555/configure-aws-managed-microsoft-ad-active-directory-and-join-your-linux-ec2-instance-to-the-domain-71fc5a0afaee
+[Configure AWS Managed Microsoft AD Active Directory](https://medium.com/@medkamel555/configure-aws-managed-microsoft-ad-active-directory-and-join-your-linux-ec2-instance-to-the-domain-71fc5a0afaee)
 
-[+] https://docs.aws.amazon.com/whitepapers/latest/active-directory-domain-services/directory-services-options-in-aws.html
+[Directory services options in AWS](https://docs.aws.amazon.com/whitepapers/latest/active-directory-domain-services/directory-services-options-in-aws.html)
 
 - Define the Inventory: Create an inventory file that lists the Linux systems you want to join to the AD domain.
 
@@ -34,13 +28,15 @@ A description of the settable variables for this role should go here, including 
 You need to privode the details to join linux into domain, like domain user who has right to add client into domain and DNS server.
 Create ad.yaml file with the content below and include it into the plyabook. Make sure /etc/resolv.conf contains the dns server address IP.
 
-ad_server:
+```yaml
+- ad_server:
     user: admin
     pass: 'test'
     domain: corp.exmple.com
+```
 
 
-You have look to the inventory setup in the github link below:
+You can have look to example inventory setup in the github link below:
 
 [+] https://github.com/medkamel555/Ad_join
 
@@ -76,12 +72,15 @@ Testing
 -------
 - Confirm that the join was successfully done via the command below.
 
- ```
+ ```bash
 realm list
  ```
 - You are able to SSH to the server using your ldap credentials. Exemple of command
 
+```bash
+id __user_name__
 ```
+```bash
 ssh -l user@corp.exmple.com IPxxxxxxxxxx
 ```
 The user can enter the username in either the username@example.com or EXAMPLE\username format. Then, you are able to connect the server with the specified user.
@@ -111,7 +110,7 @@ Some actions are planned in the upcoming role version:
 
 Author Information
 ------------------
-Mohamed Kamel CHHAYDER
-Title: System Devops engineer  
-Email: medkamel555@gmail.com
-Linkedin: linkedin.com/in/chhayder
+- Name: Mohamed Kamel CHHAYDER
+- Title: System Devops engineer  
+- Email: medkamel555@gmail.com
+- Linkedin: linkedin.com/in/chhayder
