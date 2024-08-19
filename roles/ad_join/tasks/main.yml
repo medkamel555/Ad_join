@@ -1,24 +1,29 @@
 ---
 # tasks file for ad_join
 
-- name: "Installing Required packages"
-  include_tasks: install.yml
+- name: "Join Domain name"
+  import_tasks: ad_join.yml
+  args:
+    apply:
+      become: yes
+  tags:
+  - always
+  - ad_join
 
-- name: "Discover the domain name"
-  include_tasks: discover.yml
+- name: "Check Domain name"
+  import_tasks: check.yml
+  args:
+    apply:
+      become: yes
+  tags:
+  - never
+  - ad_check
 
-- name: "Join the domain name"
-  include_tasks: join.yml
-
-- name: Edit SSSD configuration file
-  import_tasks: sssd_config.yml
-  notify:
-  - restart sssd
-
-- name: To permit a user access via SSH and console and Admin to sudoers
-  import_tasks: permit.yml
-
-- name: Edit SSH configuration file
-  import_tasks: sshd_config.yml
-  notify:
-  - restart sshd
+- name: "Leave Domain name"
+  import_tasks: leave.yml
+  args:
+    apply:
+      become: yes
+  tags:
+  - never
+  - ad_leave

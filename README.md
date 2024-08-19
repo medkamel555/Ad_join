@@ -46,7 +46,6 @@ sudo dnf -y update
 sudo dnf -y install ansible-navigator
 ```
 
-
 ### 2 - Configure AWS Managed Microsoft AD Active Directory (Optional if you have already AD)
 
 [Configure AWS Managed Microsoft AD Active Directory](https://medium.com/@medkamel555/configure-aws-managed-microsoft-ad-active-directory-and-join-your-linux-ec2-instance-to-the-domain-71fc5a0afaee)
@@ -86,7 +85,6 @@ Host webserver-01
 
 #### 4.1 - Role default config. 
 
-
 'ad_join' has default varaibles. In order to use this role, you need to ovrride the existent one with your AD credantials.  
 You need to provide the details to join linux into domain, like domain user who has right to add client into domain DNS server and user passowrd. The default role varaible is specified:
 
@@ -95,9 +93,9 @@ ad_server:
     user: admin # Admin user
     pass: 'test' # Pass user
     domain: corp.exmple.com # domain name
-    admin_group: "AWS Delegated Administrators" 
-    ou_membership: OU=Computers,DC=example,DC=com
-    admin_sudo: 'AWS\ Delegated\ Administrators'
+    admin_group: "AWS Delegated Administrators" # Admin AD group
+    ou_membership: OU=Computers,DC=example,DC=com # ou_membership
+    admin_sudo: 'AWS\ Delegated\ Administrators' 
 ```
 
 
@@ -116,8 +114,7 @@ webservers
 [webservers] 
 
 ```
-
-dataserver and webserver group are part of department. Let's assume that you have 2 EC2 instance, one for database server and the other one for webserver. Both, you would like to join them in the AD. So, we can add the AD config in group department.
+dataserver and webserver group are part of department. Let's assume that you have 2 EC2 instance, one for database server and the other one for webserver. Both, you would like to join them in the AD. So, we can add the AD config in group department tp ovrraide the role varaibles.
 
 Under inventory/group_vars/department/department.yml
 
@@ -126,9 +123,11 @@ ad_server:
   user: "admin"
   domain: "corp.chhayder.com"
   admin_group: "AWS Delegated Administrators"
-  ou_membership: OU=Computers,DC=example,DC=com
   admin_sudo: 'AWS\ Delegated\ Administrators'
 ```
+
+
+Now, we need a provide 
 
 ### 6 - Update vault.yaml
 

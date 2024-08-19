@@ -102,6 +102,8 @@ TODO:
 ------
 Some actions are planned in the upcoming role version:
 
+- Add a tag for leave domain 
+- Add a to do a check
 - SUSE and Ubuntu to be supported by the role.
 - Tested on on-premises AD such as Microsoft Active Directory and do the necessary updates to be a more general role for all ADs.
 - Support Windows join: Need code refactoring to support Windows server domain join.

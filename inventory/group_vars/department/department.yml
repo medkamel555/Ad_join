@@ -2,5 +2,4 @@ ad_server:
   user: "admin"
   domain: "corp.chhayder.com"
   admin_group: "AWS Delegated Administrators"
-  ou_membership: OU=Computers,DC=example,DC=com
   admin_sudo: 'AWS\ Delegated\ Administrators'

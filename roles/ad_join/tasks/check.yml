@@ -1,0 +1,17 @@
+---
+# tasks to do a check if the instance is  successfully joined 
+
+- name: Verify join operation
+  command: realm list
+  register: realm_list_output
+  ignore_errors: true
+
+- name: Display command output
+  debug:
+    var: realm_list_output.stdout
+  when: realm_list_output.stdout_lines
+
+- name: Display failure message
+  debug:
+    msg: "Failed: Not joined to a domain"
+  when: realm_list_output.rc != 0 or not realm_list_output.stdout_lines
