@@ -1,9 +1,10 @@
 
 ## Joining Linux Systems to an AD Domain using Ansible
 
-Description: Automating the Process of Joining Linux Systems to an AD Domain using Ansible and SSSD
 
-To automate the process of joining Linux systems to an AD domain using SSSD, follow these steps below:
+Description: Automating the Process of Joining Linux Systems to an Active Directory Domain using Ansible and SSSD
+
+To automate the process of joining Linux systems to an Active Directory (AD) domain using SSSD, follow these steps:
 
 ### 1 - Install needed dependencies
 
@@ -30,7 +31,7 @@ On RHEL 8
 subscription-manager repos --enable  ansible-2.9-for-rhel-8-x86_64-rpms
 yum install ansible
 ```
-Or you can ansible-navigator
+Or you can use ansible-navigator
 
 ```bash
 sudo subscription-manager repos --enable ansible-automation-platform-2.0-early-access-for-rhel-8-x86_64-rpms
@@ -52,12 +53,14 @@ sudo dnf -y install ansible-navigator
 
 [Directory services options in AWS](https://docs.aws.amazon.com/whitepapers/latest/active-directory-domain-services/directory-services-options-in-aws.html)
 
-- Make sure that your servers are able to reslove the domain name. You can use `dig corp.exmple.com` to check that.
+Ensure that your servers can resolve the domain name. You can use 'dig corp.example.com' to check.
 
-- Make sure that you can reach the domain name via LDAP port (389) and DNS port (53). You need to whitelist your outbound traffic to your AD server.
+Ensure that you can reach the domain name via LDAP port (389) and DNS port (53). You need to whitelist your outbound traffic to your AD server.
 
 ### 3 - Setup SSH Configuration 
-Generate ssh key
+
+You can use the cloud key-pair to connect to your instance or generate new ssh key as below :
+
 ```bash
 ssh-keygen
 ```
@@ -65,10 +68,11 @@ Copy ssh-key to managed node
 ```bash
 ssh-copy-id user@ip
 ```
-Create config.d directory
+Create config file
 ```bash
-mkdir ~/.ssh/config
+vim ~/.ssh/config
 ```
+Add the following configuration to conig
 ```bash
 Host databaserver-01
    Hostname 10.x.x.x
@@ -85,8 +89,7 @@ Host webserver-01
 
 #### 4.1 - Role default config. 
 
-'ad_join' has default varaibles. In order to use this role, you need to ovrride the existent one with your AD credantials.  
-You need to provide the details to join linux into domain, like domain user who has right to add client into domain DNS server and user passowrd. The default role varaible is specified:
+The 'ad_join' role has default variables. To use this role, you need to override the existing variables with your AD credentials. You need to provide the details to join Linux into the domain, like the domain user who has the right to add clients into the domain, DNS server, and user password. The default role variables are specified:
 
 ```yaml
 ad_server:
@@ -98,12 +101,9 @@ ad_server:
     admin_sudo: 'AWS\ Delegated\ Administrators' 
 ```
 
-
-
 #### 4.2 - Inventory structure
 
-The inventory is designed to be more generic for all IT organization. You can create your customized inventory or you ovrride the existent one.
-
+The inventory is designed to be more generic for all IT organizations. You can create your customized inventory or override the existing one.
 
 ```yaml
 [department]
@@ -114,9 +114,9 @@ webservers
 [webservers] 
 
 ```
-dataserver and webserver group are part of department. Let's assume that you have 2 EC2 instance, one for database server and the other one for webserver. Both, you would like to join them in the AD. So, we can add the AD config in group department tp ovrraide the role varaibles.
+The databaseservers and webservers groups are part of the department group. Let's assume that you have two EC2 instances, one for the database server and the other for the web server. You would like to join both instances to the AD. So, we can add the AD configuration in the department group to override the role variables.
 
-Under inventory/group_vars/department/department.yml
+Under 'inventory/group_vars/department/department.yml':
 
 ```yaml
 ad_server:
@@ -126,14 +126,26 @@ ad_server:
   admin_sudo: 'AWS\ Delegated\ Administrators'
 ```
 
+Here, the last variable you need to override is pass. However, it is not a best practice to define a plain-text password. We need to provide the admin user password in a secure way to the inventory. Ansible Vault provides a way to encrypt and manage sensitive data such as passwords. For more information about Ansible Vault, please refer to:
 
-Now, we need a provide 
+[A brief introduction to Ansible Vault](https://www.redhat.com/sysadmin/introduction-ansible-vault)
 
-### 6 - Update vault.yaml
+### 4.2 - Update vault.yaml
 
-### 7 - Launch the desired playbook
+TThe inventory includes inventory/group_vars/department/vault.yaml which contains the ad_server.pass definition. You simply need to edit this file and provide your AD password as follows:
 
-For ansible-playbook: You need to provide the password to decrypt vault.yml
+```bash
+ansible-vault edit inventory/group_vars/department/vault.yaml
+```
+Update the pass value key. 
+```yaml
+ad_server:
+  pass: 'exmple'
+```
+
+### 5 - Launch the desired playbook
+
+For ansible-playbook: You need to provide the password to decrypt vault.yaml:
 ```bash
 ansible-playbook  --ask-vault-password  playbooks/ad_join.yaml -i ./inventory
 ```
@@ -142,27 +154,44 @@ For ansible-navigator:
  ansible-navigator run -m stdout playbooks/ad_join.yaml --playbook-artifact-enable false  --vault-id one@prompt
  ```
 
-### 7 -Testing :
+### 6 - Testing :
 
-To verify if your instance is already joined the domain
+To verify if your instance has already joined the domain, you can run the same playbook using the ad_check tag:
+
+```bash
+ansible-playbook  --ask-vault-password  playbooks/ad_join.yaml -i ./inventory --tags=ad_check
+```
+For ansible-navigator: 
+```bash
+ ansible-navigator run -m stdout playbooks/ad_join.yaml --playbook-artifact-enable false  --vault-id one@prompt --tags=ad_check
+ ```
+
+Or You can connect to the instance and run the follwoinfg commands.
 ```bash
 sudo realm list
 ```
-
 ```bash
 id __user_name__
 ```
 ```bash
 ssh -l user@corp.exmple.com IPxxxxxxxxxx
 ```
-The user can enter the username in either the username@example.com or EXAMPLE\username format. Then, you are able to connect the server with the specified user.
-
-Futhermore, you can allows your to run programs with the security privileges if your user is part of AWS Delegated Administrators group in the AD
+The user can enter the username in either the username@example.com or EXAMPLE\username format. Then, you should be able to connect to the server with the specified user. Furthermore, if your user is part of the AWS Delegated Administrators group in the AD, it allows you to run programs with the security privileges.
 
 
-### Leaving the domain
+### 7 - Leaving the domain
 
-If you want to reverse the process and remove yourself from the domain, simply run the ‘realm leave’ command followed by the domain name, as shown below.
+If you want to reverse the process and remove yourself from the domain, You can run the same playbook using the ad_leave tag:
+
+```bash
+ansible-playbook  --ask-vault-password  playbooks/ad_join.yaml -i ./inventory --tags=ad_leave
+```
+For ansible-navigator: 
+```bash
+ ansible-navigator run -m stdout playbooks/ad_join.yaml --playbook-artifact-enable false  --vault-id one@prompt --tags=ad_leave
+ ```
+
+Or you can simply run the ‘realm leave’ command followed by the domain name, as shown below.
 
 ```bash
 realm leave example.com

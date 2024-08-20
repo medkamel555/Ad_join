@@ -7,8 +7,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 Version 1.0.0
 
-## [1.0.0] - 2024-02-05
+## [1.0.0] - 2024-08-20
 
-DyCO-IAC Workspace 5.4.13 is a minor upgrade whch includes no significant features.
+
 
 ### Support

@@ -7,7 +7,7 @@ Requirements
 
 Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here.
 
-- Setup an Active Directory: You can as exemple AWS Directory service. You can refer to artical below or offical AWS doc.
+- Setup an Active Directory: You can as an example use AWS Directory service. You can refer to the articles below or the official AWS documentation.
 
 [Configure AWS Managed Microsoft AD Active Directory](https://medium.com/@medkamel555/configure-aws-managed-microsoft-ad-active-directory-and-join-your-linux-ec2-instance-to-the-domain-71fc5a0afaee)
 
@@ -15,18 +15,14 @@ Any pre-requisites that may not be covered by Ansible itself or the role should 
 
 - Define the Inventory: Create an inventory file that lists the Linux systems you want to join to the AD domain.
 
-- Make sure that your servers are able to reslove the domain name. You can use `dig corp.exmple.com` to check that.
+- Make sure that your servers are able to resolve the domain name. You can use dig corp.example.com to check that.
 
 - Make sure that you can reach the domain name via LDAP port (389) and DNS port (53). You need to whitelist your outbound traffic to your AD server.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-
-You need to privode the details to join linux into domain, like domain user who has right to add client into domain and DNS server.
-Create ad.yaml file with the content below and include it into the plyabook. Make sure /etc/resolv.conf contains the dns server address IP.
+You need to provide the details to join Linux into the domain, like the domain user who has the right to add clients into the domain and the DNS server. Create ad.yaml file with the content below and include it into the playbook. Make sure /etc/resolv.conf contains the DNS server address IP.
 
 ```yaml
 - ad_server:
@@ -35,8 +31,8 @@ Create ad.yaml file with the content below and include it into the plyabook. Mak
     domain: corp.exmple.com
 ```
 
+You can have a look at the example inventory setup in the GitHub link below:
 
-You can have look to example inventory setup in the github link below:
 
 [+] https://github.com/medkamel555/Ad_join
 
@@ -50,11 +46,6 @@ OS Linux Supported
 - Amazon Linux 1
 - Amazon Linux 2
 - Amazon Linux 2023
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
 
 Example Playbook
 ----------------
@@ -83,10 +74,8 @@ id __user_name__
 ```bash
 ssh -l user@corp.exmple.com IPxxxxxxxxxx
 ```
-The user can enter the username in either the username@example.com or EXAMPLE\username format. Then, you are able to connect the server with the specified user.
-
-Futhermore, you can allows your to run programs with the security privileges if your user is part of AWS Delegated Administrators group in the AD
-
+The user can enter the username in either the username@example.com or EXAMPLE\username format. Then, you should be able to connect to the server with the specified user.
+Furthermore, if your user is part of the AWS Delegated Administrators group in the AD, it allows you to run programs with the security privileges.
 
 Integration
 -------
@@ -102,8 +91,6 @@ TODO:
 ------
 Some actions are planned in the upcoming role version:
 
-- Add a tag for leave domain 
-- Add a to do a check
 - SUSE and Ubuntu to be supported by the role.
 - Tested on on-premises AD such as Microsoft Active Directory and do the necessary updates to be a more general role for all ADs.
 - Support Windows join: Need code refactoring to support Windows server domain join.
