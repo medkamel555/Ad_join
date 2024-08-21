@@ -4,14 +4,11 @@
   shell: /bin/bash -c "/usr/sbin/realm  permit --all"
   register: ad_status
 
-- name: To permit a admin group  suderos access
-  shell: /bin/bash -c "realm permit -g {{ ad_server.admin_group }}"
-  register: ad_status
-
 - name: Updating sudors for Domain Admins users
   lineinfile: 
      path: /etc/sudoers
+     regexp: "^{{ ad_server.domain }}"
      state: present
-     line: "{{ '{}@{} ALL=(ALL) NOPASSWD:ALL'.format(ad_server.admin_sudo,
+     line: "{{ '%{}@{} ALL=(ALL) NOPASSWD:ALL'.format(ad_server.admin_sudo,
       ad_server.domain) }}"
      validate: 'visudo -cf %s'

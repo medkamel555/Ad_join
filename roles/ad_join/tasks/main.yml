@@ -2,28 +2,19 @@
 # tasks file for ad_join
 
 - name: "Join Domain name"
-  import_tasks: ad_join.yml
-  args:
-    apply:
-      become: yes
+  include_tasks: ad_join.yml
   tags:
   - always
   - ad_join
 
 - name: "Check Domain name"
   import_tasks: check.yml
-  args:
-    apply:
-      become: yes
   tags:
   - never
   - ad_check
 
 - name: "Leave Domain name"
   import_tasks: leave.yml
-  args:
-    apply:
-      become: yes
   tags:
   - never
   - ad_leave

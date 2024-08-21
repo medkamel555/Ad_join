@@ -3,13 +3,13 @@
 
 
 - name: "Installing Required packages"
-  include_tasks: install.yml
+  import_tasks: install.yml
 
 - name: "Discover the domain name"
-  include_tasks: discover.yml
+  import_tasks: discover.yml
 
 - name: "Join the domain name"
-  include_tasks: join.yml
+  import_tasks: join.yml
 
 - name: Edit SSSD configuration file
   import_tasks: sssd_config.yml
@@ -18,6 +18,8 @@
 
 - name: To permit a user access via SSH and console and Admin to sudoers
   import_tasks: permit.yml
+  notify:
+  - restart sssd
 
 - name: Edit SSH configuration file
   import_tasks: sshd_config.yml

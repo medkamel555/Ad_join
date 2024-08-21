@@ -8,7 +8,7 @@
 
 - name: Display command output
   debug:
-    var: realm_list_output.stdout
+    var: realm_list_output.stdout_lines
   when: realm_list_output.stdout_lines
 
 - name: Display failure message

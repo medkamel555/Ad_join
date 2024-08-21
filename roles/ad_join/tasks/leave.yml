@@ -2,5 +2,5 @@
 
 - name: Leave any joined domain
   command: realm leave
-  register: realm_list_output
-  ignore_errors: true
+  register: realm_leave_output
+
