@@ -29,9 +29,4 @@ ansible-navigator.log
 /output/
 # Tree directories and files
 __pycache__/
-*.code-workspace
-.vscode
-build.env
-scripts/nexus/*/*
-playbooks/dyco_tools/backup_conf/*.csv
-playbooks/dyco_tools/log4j_scan/*.csv
+playbooks/*.json
