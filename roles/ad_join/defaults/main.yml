@@ -5,6 +5,6 @@ ad_server:
     user: admin # Admin user
     pass: 'test' # Pass user
     domain: corp.exmple.com # domain name
-    admin_group: "AWS Delegated Administrators"
-    ou_membership: OU=Computers,DC=example,DC=com
-    admin_sudo: 'AWS\ Delegated\ Administrators'
+    admin_group: "AWS Delegated Administrators" # Admin group
+    ou_membership: OU=Computers,DC=example,DC=com # OU membership
+    admin_sudo: 'AWS\ Delegated\ Administrators' # Admin sudo

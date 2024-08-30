@@ -6,4 +6,5 @@ pkgs:
   - krb5-workstation
   - oddjob-mkhomedir
   - adcli
+  - realmd
 

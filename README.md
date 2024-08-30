@@ -1,9 +1,60 @@
 
 ## Joining Linux Systems to an AD Domain using Ansible
 
-
 Description: Automating the Process of Joining Linux Systems to an Active Directory Domain using Ansible and SSSD
 
+### Project layout 
+
+![screenshot](ad.drawio.png)
+
+
+### Project structure
+```bash
+.
+├── ansible.cfg # contains important Ansible settings that control how Ansible operates
+├── ansible-navigator.log # output of ansible-navigator
+├── CHANGELOG.md  #  Changelogs keep track of project versioning 
+├── inventory
+│   ├── groups # the groups file is used to define and organize host groups
+│   ├── group_vars
+│   │   ├── dataseserver.yml
+│   │   └── department
+│   │       ├── department.yml
+│   │       └── vault.yaml # contains AD credatilas 
+│   └── hosts.yml
+├── output # output of ansible-playbook 
+├── playbooks
+│   └── ad_join.yaml # AD playbook 
+├── README.md
+└── roles # this hierarchy represents a "role"
+    └── ad_join # ad_join role contains the steps to join the domain using the SSSD
+        ├── CHANGELOG.md
+        ├── defaults # define default variable values for the role.
+        │   └── main.yml
+        ├── files
+        ├── handlers  # The handlers directory is used to define handlers,
+        │   └── main.yml
+        ├── meta  # defines metadata about an Ansible role
+        │   └── main.yml
+        ├── README.md
+        ├── tasks 
+        │   ├── ad_join.yml # Import all tasks to join the AD
+        │   ├── check.yml # Check if the instance joined correctly the domaine.
+        │   ├── discover.yml # Discover the defined AD: /usr/sbin/realm discover { domain }}
+        │   ├── install.yml # Install the required Red Hat packages 
+        │   ├── join.yml  # defines step to join the doamin and check: realm join -v -U admin  corp.example.com --install=/
+        │   ├── leave.yml #  realm leave example.com
+        │   ├── main.yml  # entry point for the role.
+        │   ├── permit.yml # To allow all user access
+        │   ├── sshd_config.yml # sshd_config config update 
+        │   └── sssd_config.yml # sssd_config config update 
+        ├── templates
+        ├── tests
+        │   ├── inventory
+        │   └── test.yml
+        └── vars
+            └── main.yml  # Variables defined in this file are added to the role's variables and take precedence over the defaults/main.yml file.
+```
 To automate the process of joining Linux systems to an Active Directory (AD) domain using SSSD, follow these steps:
 
 ### 1 - Install needed dependencies
@@ -74,7 +125,7 @@ vim ~/.ssh/config
 ```
 Add the following configuration to conig
 ```bash
-Host databaserver-01
+Host dataserver-01
    Hostname 10.x.x.x
    User ec2-user
    IdentityFile ~/.ssh/id_rsa
@@ -197,3 +248,67 @@ Or you can simply run the ‘realm leave’ command followed by the domain name,
 realm leave example.com
 ```
 
+### 8 - Exemple of execution
+
+### 8.1 Lab description:
+
+3 EC2 instance:
+
+- RHEL 9.4 instance dataserver-01
+- Amazon 2023 instance webservers-01
+- Amazon 2 webservers-02
+
+![alt text](image.png)
+
+
+SSH Configuration
+
+```bash
+cat ~/.ssh/config 
+
+Host dataserver-01
+    HostName IPxx.xxx.xxx.xx
+    User ec2-user
+    IdentityFile ~/.ssh/xxx.pem
+
+Host webservers-01
+    HostName  IPxx.xxx.xxx.xx
+    User ec2-user
+    IdentityFile ~/.ssh/xxx.pem
+
+Host  webservers-02
+        Hostname IPxx.xxx.xxx.xx
+        User ec2-user
+        IdentityFile ~/.ssh/xxx.pem
+```
+
+AWS AD Directory
+
+
+![Directory details](image-1.png)
+ 
+### 8.1 Join the domain for all EC2 instances
+
+
+![alt text](image-2.png)
+
+![alt text](image-3.png)
+
+
+### 8.2 Testing
+
+![alt text](image-4.png)
+
+![alt text](image-5.png)
+
+
+
+![alt text](image-6.png)
+
+### 8.3 Leaving the domain
+
+![alt text](image-7.png)
+
+### 8.4 Checking again after leaving the domain
+
+![alt text](image-8.png)

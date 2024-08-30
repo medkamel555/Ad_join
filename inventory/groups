@@ -5,7 +5,7 @@
 #------------------------------------------------
 [department]
 [department:children]
-dataseserver
+dataserver
 webservers
-[dataseserver]
-[webservers]    
+[dataserver]
+[webservers]

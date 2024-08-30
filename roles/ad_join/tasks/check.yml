@@ -11,6 +11,11 @@
     var: realm_list_output.stdout_lines
   when: realm_list_output.stdout_lines
 
+- name: Display success message
+  debug:
+    msg: "Join successful!"
+  when: realm_list_output.rc == 0 and realm_list_output.stdout_lines
+
 - name: Display failure message
   debug:
     msg: "Failed: Not joined to a domain"

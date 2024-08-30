@@ -1,6 +1,6 @@
 ---
 - name: "Ad join"
-  hosts: dataseserver
+  hosts: department
   roles:
      - ad_join
   gather_facts: yes

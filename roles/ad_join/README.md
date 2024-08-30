@@ -1,6 +1,7 @@
 Role Name: ad_join 
 ------------
 
+
 Description: Automating the Process of Joining Linux Systems to an AD Domain using Ansible and SSSD
 Requirements
 ------------
