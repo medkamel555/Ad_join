@@ -5,7 +5,7 @@ Description: Automating the Process of Joining Linux Systems to an Active Direct
 
 ### Project layout 
 
-![screenshot](ad.drawio.png)
+![screenshot](img/ad.drawio.png)
 
 
 ### Project structure
@@ -290,25 +290,24 @@ AWS AD Directory
 ### 8.1 Join the domain for all EC2 instances
 
 
-![alt text](image-2.png)
+![alt text](img/image-2.png)
 
-![alt text](image-3.png)
+![alt text](img/image-3.png)
 
 
 ### 8.2 Testing
 
-![alt text](image-4.png)
+![alt text](img/image-4.png)
 
-![alt text](image-5.png)
+![alt text](img/image-5.png)
 
 
-
-![alt text](image-6.png)
+![alt text](img/image-6.png)
 
 ### 8.3 Leaving the domain
 
-![alt text](image-7.png)
+![alt text](img/image-7.png)
 
 ### 8.4 Checking again after leaving the domain
 
-![alt text](image-8.png)
+![alt text](img/image-8.png)
